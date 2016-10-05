@@ -1,0 +1,10 @@
+[Unit]
+Description=Kubernetes Proxy
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+ExecStart=/opt/bin/kube-proxy \
+--master=http://${k8s-apiserver-fqdn}:8080 \
+--logtostderr=true
+Restart=always
+RestartSec=10
