@@ -8,6 +8,18 @@
 </div>
 
 !SLIDE
+Today's **goal**
+<br/>
+<br/>
+Running a kubernetes cluster on 3 hosts
+
+!SUB
+About **you**
+
+!SUB
+About **us**
+<br/>
+<br/>
 Fai Fung Cloud Engineer at **Xebia**.
 
 Eric Nieuwenhuijsen Cloud Engineer at **Xebia**.
@@ -16,6 +28,14 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 
 !NOTE
 - to be added, intro
+
+!SLIDE
+Today's **Setup**
+<br/>
+<br/>
+<center>
+  <img src="img/setup-vagrant-machines.png" style="width: 70%;" />
+</center>
 
 !SLIDE
 **Kubernetes** concepts!
