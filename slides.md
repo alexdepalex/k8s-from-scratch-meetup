@@ -19,7 +19,11 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 
 !SLIDE
 **Kubernetes** concepts!
-
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-overview.png" style="width: 70%;" />
+</center>
 
 !SUB
 Kubelet, leuk proces
@@ -31,6 +35,22 @@ Kube-proxy
 * API server
 * Controller Manager
 * ETCD
+
+!SLIDE
+**Kubernetes** concepts: Kubelet, Service Proxy, Pods
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-kubelets-service-pods.png" style="width: 70%;" />
+</center>
+
+!SLIDE
+**Kubernetes** concepts: API server, Controller Manager, etcd
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-api-cm-scheduler.png" style="width: 70%;" />
+</center>
 
 !SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
