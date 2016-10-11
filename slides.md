@@ -22,7 +22,7 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 <br/>
 <br/>
 <center>
-  <img src="/img/k8s-arch-overview.png" style="width: 70%;" />
+  <img src="img/k8s-arch-overview.png" style="width: 70%;" />
 </center>
 
 !SUB
@@ -41,7 +41,7 @@ Kube-proxy
 <br/>
 <br/>
 <center>
-  <img src="/img/k8s-arch-kubelets-service-pods.png" style="width: 70%;" />
+  <img src="img/k8s-arch-kubelets-service-pods.png" style="width: 70%;" />
 </center>
 
 !SLIDE
@@ -49,7 +49,7 @@ Kube-proxy
 <br/>
 <br/>
 <center>
-  <img src="/img/k8s-arch-api-cm-scheduler.png" style="width: 70%;" />
+  <img src="img/k8s-arch-api-cm-scheduler.png" style="width: 70%;" />
 </center>
 
 !SLIDE
