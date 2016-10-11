@@ -19,7 +19,11 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 
 !SLIDE
 **Kubernetes** concepts!
-
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-overview.png" style="width: 70%;" />
+</center>
 
 !SUB
 Kubelet, leuk proces
@@ -33,6 +37,22 @@ Kube-proxy
 * ETCD
 
 !SLIDE
+**Kubernetes** concepts: Kubelet, Service Proxy, Pods
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-kubelets-service-pods.png" style="width: 70%;" />
+</center>
+
+!SLIDE
+**Kubernetes** concepts: API server, Controller Manager, etcd
+<br/>
+<br/>
+<center>
+  <img src="/img/k8s-arch-api-cm-scheduler.png" style="width: 70%;" />
+</center>
+
+!SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
 
 We have prepared the specification of the IAAS layer (on AWS) for you.
@@ -42,6 +62,8 @@ We have prepared the specification of the IAAS layer (on AWS) for you.
 
 !SLIDE
 **Kubernetes setup the easy way!**
+
+Ensure have virtualBox, vagrant working including 'vagrant ssh' access. For windows users, follow this blog if 'vagrant ssh' is not working [blog](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html)  
 
 A simple tutorial to setup Kubernetes on a Vagrant cluster
 
