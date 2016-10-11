@@ -73,6 +73,18 @@ Kube-proxy
 </center>
 
 !SLIDE
+**Weave** overlay network
+<br/>
+
+- Weave allows you to connect docker containers across multiple hosts together
+- it gives you a flat network for your container environment independent of which host they are located (AWS, GCE, Azure, etc.)
+
+<br/>
+<center>
+  <img src="img/weave.png" style="width: 70%;" />
+</center>
+
+!SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
 
 We have prepared the specification of the IAAS layer (on AWS) for you.
