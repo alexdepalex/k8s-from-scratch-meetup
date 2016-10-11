@@ -26,14 +26,16 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 !SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
 
-We have prepared the specification of the IAAS layer (on AWS) for you. 
+We have prepared the specification of the IAAS layer (on AWS) for you.
 
 !NOTE
 - to be added
 
 
 !SLIDE
-**Kubernetes setup the easy way!** 
+**Kubernetes setup the easy way!**
+
+Ensure have virtualBox, vagrant working including 'vagrant ssh' access. For windows users, follow this blog if 'vagrant ssh' is not working [blog](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html)  
 
 A simple tutorial to setup Kubernetes on a Vagrant cluster
 
@@ -43,7 +45,7 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 - Quick way to use and experiment with vagrant
 
 !SLIDE
-**A successful installation and setup of Kubernetes?** 
+**A successful installation and setup of Kubernetes?**
 
 However, a blackbox setup, what about troubleshooting, a more customized setup, etc
 
@@ -59,7 +61,7 @@ ensure openssl is installed
 workaround: sudo ln -sf /usr/local/bin/openssl /opt/vagrant/embedded/bin/openssl
 
 !SLIDE
-**Kubernetes setup the HARD way!** 
+**Kubernetes setup the HARD way!**
 
 Kubernetes is working, what about the actual setup
 
