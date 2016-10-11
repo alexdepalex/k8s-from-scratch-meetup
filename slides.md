@@ -1,16 +1,16 @@
 <!-- .slide: data-background-color="var(--mainColor)" data-background="url(/img/gamification.jpg)" data-background-size="cover" data-background-position="center" -->
 # Kubernetes from scratch<br/>
-# building a Kubernetes cluster from scratch
+# <span style='font-size:0.9em'>How to run kube on almost any IaaS</span>
 <br />
 <br />
 <div style="width: 200px; margin-bottom: -500px; margin-left: -200px;">
-  <img src="/img/xebia.svg" />
+  <img src="img/xebia.svg" />
 </div>
 
 !SLIDE
-Fai Fung Cloud engineer at **Xebia**.
+Fai Fung Cloud Engineer at **Xebia**.
 
-Erik Nieuwenhuijsen Cloud engineer at **Xebia**.
+Eric Nieuwenhuijsen Cloud Engineer at **Xebia**.
 
 Thomas Kruitbosch DevOps Consultant at **Xebia**.
 
@@ -20,8 +20,17 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 !SLIDE
 **Kubernetes** concepts!
 
-!NOTE
-- to be added
+
+!SUB
+Kubelet, leuk proces
+
+!SUB
+Kube-proxy
+
+!SUB
+* API server
+* Controller Manager
+* ETCD
 
 !SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
@@ -31,6 +40,7 @@ We have prepared the specification of the IAAS layer (on AWS) for you.
 !NOTE
 - to be added
 
+!SUB
 
 !SLIDE
 **Kubernetes setup the easy way!**
