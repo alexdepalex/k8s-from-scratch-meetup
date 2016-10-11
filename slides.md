@@ -1,16 +1,16 @@
 <!-- .slide: data-background-color="var(--mainColor)" data-background="url(/img/gamification.jpg)" data-background-size="cover" data-background-position="center" -->
 # Kubernetes from scratch<br/>
-# building a Kubernetes cluster from scratch
+# <span style='font-size:0.9em'>How to run kube on almost any IaaS</span>
 <br />
 <br />
 <div style="width: 200px; margin-bottom: -500px; margin-left: -200px;">
-  <img src="/img/xebia.svg" />
+  <img src="img/xebia.svg" />
 </div>
 
 !SLIDE
-Fai Fung Cloud engineer at **Xebia**.
+Fai Fung Cloud Engineer at **Xebia**.
 
-Erik Nieuwenhuijsen Cloud engineer at **Xebia**.
+Eric Nieuwenhuijsen Cloud Engineer at **Xebia**.
 
 Thomas Kruitbosch DevOps Consultant at **Xebia**.
 
@@ -20,20 +20,30 @@ Thomas Kruitbosch DevOps Consultant at **Xebia**.
 !SLIDE
 **Kubernetes** concepts!
 
-!NOTE
-- to be added
+
+!SUB
+Kubelet, leuk proces
+
+!SUB
+Kube-proxy
+
+!SUB
+* API server
+* Controller Manager
+* ETCD
 
 !SLIDE
 **Whats'up?** Kubernetes, Kubernetes, Kubernetes.
 
-We have prepared the specification of the IAAS layer (on AWS) for you. 
+We have prepared the specification of the IAAS layer (on AWS) for you.
 
 !NOTE
 - to be added
 
+!SUB
 
 !SLIDE
-**Kubernetes setup the easy way!** 
+**Kubernetes setup the easy way!**
 
 A simple tutorial to setup Kubernetes on a Vagrant cluster
 
@@ -43,7 +53,7 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 - Quick way to use and experiment with vagrant
 
 !SLIDE
-**A successful installation and setup of Kubernetes?** 
+**A successful installation and setup of Kubernetes?**
 
 However, a blackbox setup, what about troubleshooting, a more customized setup, etc
 
@@ -59,7 +69,7 @@ ensure openssl is installed
 workaround: sudo ln -sf /usr/local/bin/openssl /opt/vagrant/embedded/bin/openssl
 
 !SLIDE
-**Kubernetes setup the HARD way!** 
+**Kubernetes setup the HARD way!**
 
 Kubernetes is working, what about the actual setup
 
