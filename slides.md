@@ -118,7 +118,9 @@ vagrant ssh
 
 !SUB
 *Verify cluster health*
-`etcdctl cluster-health`
+```
+etcdctl cluster-health
+```
 
 !SUB
 PAUZE
@@ -180,3 +182,27 @@ kubectl create -f /path/to/app.yml
 !SUB
 *View the app*
 Open your browser to http://bla.bla
+
+!SLIDE
+*Production readiness*
+- SSL certs for ETCD/communication
+- Multi master setup
+
+!SUB
+*Changes made to vagrant image* <br />
+Our vagrant boxes are based on the default [CoreOS](https://github.com/coreos/coreos-vagrant.git) images<br />
+- Unit files for kubernetes added
+- YAML files for Weave and Application
+- Preloaded containers
+ - Hyperkube
+ - Weave
+- Preloaded binaries
+ - kubectl
+ - kubelet
+ - kube-proxy
+
+!SLIDE
+*Questions?*
+
+!SLIDE
+***BEER***
