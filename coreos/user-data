@@ -102,7 +102,8 @@ write_files:
         - --service-node-port-range=25000-32767
         - --secure-port=8084
         - --advertise-address=$private_ipv4
-        - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota
+        - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,ServiceAccount,SecurityContextDeny,ResourceQuota
+        - --service-account-key-file=/etc/kubernetes/ssl/serviceaccount.key
         ports:
         - containerPort: 8084
           hostPort: 8084
@@ -110,6 +111,14 @@ write_files:
         - containerPort: 8080
           hostPort: 8080
           name: local
+        volumeMounts:
+        - mountPath: /etc/kubernetes/ssl
+          name: ssl-certs-kubernetes
+          readOnly: true
+      volumes:
+      - name: ssl-certs-kubernetes
+        hostPath:
+          path: /etc/kubernetes/ssl
 - path: "/etc/kubernetes/configs/kube-controller-manager.yml"
   permissions: '0755'
   content: |
@@ -128,6 +137,7 @@ write_files:
         - /hyperkube
         - controller-manager
         - --master=http://$private_ipv4:8080
+        - --service-account-private-key-file=/etc/kubernetes/ssl/serviceaccount.key
         livenessProbe:
           httpGet:
             host: 127.0.0.1
@@ -135,6 +145,14 @@ write_files:
             port: 10252
           initialDelaySeconds: 15
           timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /etc/kubernetes/ssl
+          name: ssl-certs-kubernetes
+          readOnly: true
+      volumes:
+      - name: ssl-certs-kubernetes
+        hostPath:
+          path: /etc/kubernetes/ssl
 - path: "/etc/kubernetes/configs/kube-scheduler.yml"
   permissions: '0755'
   content: |
@@ -160,3 +178,33 @@ write_files:
             port: 10251
           initialDelaySeconds: 15
           timeoutSeconds: 1
+- path: "/etc/kubernetes/ssl/serviceaccount.key"
+  permissions: '0700'
+  content: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAthvNlC0M13tL+196joGyyRkc9Z1TJyM1HA0x1ClMXLDNXYth
+    lnlbW5p/BHPhBiEIRXoQia05pWUWhmRAHfsHL/kzZlWrRlsmoJHkBKw28b8XSZ9p
+    EMvqFTdRsAJxrG69FoMvoAdyu3Jqv3BSyOBcI8MBtoApB6Kg0wj3l6boqI0D1Qc8
+    2pzcoh83txZFPw/LCR2dT2ATNyrh3Tt4cQlzJ6EWa75mWeMiC/xxEqJgi12duIWi
+    KCR3XhkXB1vNPBsiFq30RdvzvPeDfeWhjK3CTpeFRTnHS8xmSKLrreaahe1ifQAR
+    +GNGbKqAOD3oT43u3loFGNVBnSqcQWSThNe3JQIDAQABAoIBAFGvlP5zWsBJcSK3
+    iEzmBqFH34KY6FS06TzE+mX1hGhLckMUo1iQ5Rbo7TK9G+HY7VHk2Ag5qJL1Di6I
+    R25rTKULPjAYG3S6rE/4QPSLnzW/Bp4ioElFfqG3p6+w2PaE0dKIU9OPo7pLL3Dh
+    3HB4mzv7XAhV4pGnNEaVTiI7Xz9DCAhhx607tnbzl5E1U9DZS1TGfwMld8LRgQc/
+    RZkh4Sgb7QL+Ze/1TRSD5baDxaH5TaPHKxqBGyRteoLjBUf0wQifMGkvtOG0oVrC
+    CEnOFnWRuv7v8zNFWFz+EPMg7hVA0cayXopA9m5j2NBFSjd/NVT1bvCa1SXHkIJ8
+    +Y6QM90CgYEA3CwuAuxZFTKfq5ZwW/cDvsetlCYeNApsxcBCrv3v3qoC+BbJk2nU
+    HK8Ti0/QtLJgVBt3TLHfxndiKWLhf9HUYO05LAY3GiFQDC/8d6TwOnFXJEfck7TJ
+    IgbIBIRF+J29WaNpd6Sf328xPF4Rkl/S3OfzW/DDneFbFzcuU6wk73cCgYEA0736
+    B7xNK1dFY2rp/AC98OA6Q3DRixWRPKZaPCTgjhuI18b/Y0jbGe8HGJ1DqZ7YGy4E
+    aEZhEOOS+wzaBfsG0Vj3lOjURDrQB3NctLoPyaZ5Yz1GeLKWYV3L6FzXquI7YZ5c
+    hBShxfgiDsGbIMhLqCDSUIW6u3Dyf6qW+0ocDUMCgYEA24jF3C5UaRmQMiSQJnL3
+    7gvmHRmg9h0K9mdNVnVn7yqwSTVXi0BzuqIrp7ZPEU3nVRYJ75RQ3/D8FO4+kRfl
+    XzxKzIXp/YkH6w8R+y6gRnXrAQcSfsk94ErIuBA4QLzwJ+gT6rNgogaaHmphtQUN
+    GS3C74LzWoJxNIXWEKJONeMCgYBNZUyGFVMTu4OWclbykQbci+lgC1Xcg9ahl6C2
+    CTi3WOMtFAT3soK7uP4cBifcUT5muOxNfSQvuy9Xanwq4XW9gcqFeJFWGzU88/L3
+    8Gai66HFH3mp1oVXM6S722vNf4H7DZp9gNkc9rTkNepREkVtQAn/+tGlgARzm9Qy
+    KAWW5wKBgFCbNfV3R1oy1hAkwTatXBkRARs6sWS1dvOyUW35k4+ekVOesCpyjzaW
+    1F1M8MEzLc2K5+BdRsdUoko1kxC9Pm+QloX2M9tQrtsX+a+5p2pG1oh2x7Q86m+Y
+    7HaBgEE/eevYIuy6l+kLg1elGyofBDzntnAxjOSXNg7wm7mWCFhf
+    -----END RSA PRIVATE KEY-----
