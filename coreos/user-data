@@ -102,7 +102,7 @@ write_files:
         - --service-node-port-range=25000-32767
         - --secure-port=8084
         - --advertise-address=$private_ipv4
-        - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
+        - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota
         ports:
         - containerPort: 8084
           hostPort: 8084
