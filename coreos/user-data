@@ -50,6 +50,7 @@ coreos:
       --config=/etc/kubernetes/manifests \
       --network-plugin=cni \
       --network-plugin-dir=/etc/cni/net.d \
+      --node-ip=$private_ipv4 \
       --allow-privileged=true
       Restart=always
       RestartSec=10
