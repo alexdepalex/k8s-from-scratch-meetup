@@ -63,7 +63,8 @@ coreos:
       [Service]
       ExecStart=/opt/bin/kube-proxy \
       --master=http://172.17.8.101:8080 \
-      --logtostderr=true
+      --logtostderr=true \
+      --masquerade-all
       Restart=always
       RestartSec=10
   - name: kube-kubelet-master-configs.service
