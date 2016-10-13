@@ -43,6 +43,7 @@ coreos:
 
       [Service]
       ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests
+      ExecStartPre=/usr/sbin/update-ca-certificates
       ExecStart=/opt/bin/kubelet \
       --api-servers=http://172.17.8.101:8080 \
       --healthz-bind-address=0.0.0.0 \
@@ -103,6 +104,9 @@ write_files:
         - --secure-port=8084
         - --advertise-address=$private_ipv4
         - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,ServiceAccount,SecurityContextDeny,ResourceQuota
+        - --tls-cert-file=/etc/kubernetes/ssl/apiserver.pem
+        - --tls-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+        - --client-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-key-file=/etc/kubernetes/ssl/serviceaccount.key
         ports:
         - containerPort: 8084
@@ -137,6 +141,7 @@ write_files:
         - /hyperkube
         - controller-manager
         - --master=http://$private_ipv4:8080
+        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-private-key-file=/etc/kubernetes/ssl/serviceaccount.key
         livenessProbe:
           httpGet:
@@ -178,6 +183,78 @@ write_files:
             port: 10251
           initialDelaySeconds: 15
           timeoutSeconds: 1
+- path: "/etc/kubernetes/ssl/apiserver-key.pem"
+  permissions: '0700'
+  content: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA2mJ/v9MZeERpJJSmo649+84D59OyjndCUmcxz+ufgtj81+oq
+    rDS4YTTI4yHYeAZa9bNex2bC+PoUDzFSIaKcCpqgFK86hUTBZ19rtgtadmk4MFHF
+    0PsqzHcCVNdrZApQf4JgxBce4BXSMGN8IMU83FZpIuZeMM73S8xYYzXpwecij1aL
+    nPvPgj1KsDsIlmaY+qZbkYTN9OC55MJItdXuFIB0Om+eYWKamO1yoRCkx2Ijd7OW
+    Z5aLDD+IA2FFpU9jFzHe2rED2Hxk7GY4+4/QGfM60U/jBvf6Wv72L5bENSA5NXKd
+    gzghTwr/ARPGzuFHX819tpjO3Dbf5DMx7tUd6QIDAQABAoIBAHLwVqZid8xJzUD4
+    kAAkC/GEy59vV1IOSLTQJXJ2Y/zdMa5+S7lZAhX/Tx/kR2dciPE6V88BMesSzA32
+    +nBDgnc+TLS2SUmtF1HN8gXdUd5yoKUl1MSZ/TuiA3Md8iK0HwwNVdq/BHwSYA8h
+    vUoOJWsee7Vno/lyZMvbIEYPMRnhEJfr5Txkf2z+BbzzvOUEvwcaTfmRylTvtB5E
+    KYuobUXBUKc3vBV3zDZYYozux1cqXRG1KzXZ8fqo2ayftvpi2F4yYZ2QIOkDkCX9
+    eCK+pZh0kK4yS9oCEYUxcrKQ+syDA5zf9niLWYdMS5ISVwb6+Y5w0oZ1zL170J+G
+    UFMzGVECgYEA+aTuUt+UDsGHGwE4V87r3QWTeXNTNIfsTsmSwJfAc8tvSmLDh05E
+    Adib7ncsqHRIrT4xlL+xkWjdC4hquuCsgUf7m7HeVB49dwJzDu9jzOtYYZcLR3wj
+    mKHIM0Q0mrGwfF6EPKw/TNxjok9aHV/2EcDVc2ebO4r9lgOaiv2Apo0CgYEA3/HV
+    LCSXrURVeY90+PU+sQiXMs8DKXCuJBg8tPBnJ7G/QspkShkYTi0M+/L1nEHeRXDO
+    TZpZN3FEP1QhG+hynrVqaMYGpJYbB2dUP3FoJhI3HvE685PPglU6S4R7jozTkTrc
+    gu6D6Ad4MKw/pZQ4gOPGCE9b9PqEq8Su8sRye80CgYEAsfKBuusJw5bpcjNlcRnb
+    AJon7AtrhOdaZzLB+6xwD1o0gyZxT7JXQaWgSNQELjNtVqgdeXVG4mqIHd9ojLr3
+    29NuoyWfYACKOZmyYDP9xKUBQ9cBwDvZt8OiTADTKm18arqIsiLpoCT8lEbR6lxr
+    r23v+KoiecfySItbDrXyjUUCgYB2yMVztq0lYJud8PPwodTw/keE0b0xm+0ihCCf
+    MOzmZye1+7iafRkhTlAWy9ZvXZjSaHVlQDuWZuP2W198eB1kBYI9tNwNLPmFQc+0
+    HylJGFxYc0f7rylgTmivacRH5nbKD9irMmyRBHVCC/tujmIyK579BWsXVFJO8fKC
+    HqVC+QKBgQCq0Gp6SJ8e7ZQNZNkClGnnUPOwczFHarxvg4gyQ7KFAGC97bW2+2w6
+    cB+oDSnLpoxw00orjemt+5EgIZJA0Cj62Zc754lRt4UvySd99MToKVbe2reNdEpF
+    TAnsqG0KGT0a6BDKfR/fhtJHUAh9qDm77AhNuWDrFBYT/YhpEr3abA==
+    -----END RSA PRIVATE KEY-----
+- path: "/etc/kubernetes/ssl/ca.pem"
+  permissions: '0700'
+  content: |
+    -----BEGIN CERTIFICATE-----
+    MIIC9zCCAd+gAwIBAgIJAJ5JjqH9JpPGMA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNV
+    BAMMB2t1YmUtY2EwHhcNMTYxMDEzMTkwNDAxWhcNNDQwMjI5MTkwNDAxWjASMRAw
+    DgYDVQQDDAdrdWJlLWNhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+    uek8thT/NfcAGU/tLzIecwRSdqKLr0vq4oqJGwZ7F1S0L5xqWG8qBdYBrwL2UGHh
+    Y1Wg5XgWMVzYuaIGPOC3pSZDU/eoqIlscVAMWRlFQxb/mRAIZR+unLOmVttQSTJh
+    cLgv7Nt/MJXb+lA/0unmljNvEwOLt+gGK4/JFrvanvO+GOixbzsf5gV+NVoEtFjm
+    wunu0CqtFpG23bmm2Z5kMrivV/0H4qVKI2uH7PqkXHDlXguZAnBMDS29x6oau8Do
+    fML1VtmQ1sykK/nK0tBOoqTXHklVtbimwSxglSiCMpwrxwX/mBXhBXIroXDYtOL3
+    eY5CxHeFZwhsKEua9XgrrQIDAQABo1AwTjAdBgNVHQ4EFgQUK3DHcxa2TACKd6l3
+    b67rfB/inL4wHwYDVR0jBBgwFoAUK3DHcxa2TACKd6l3b67rfB/inL4wDAYDVR0T
+    BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAPntg57p/U7OVfOOsuJm93OsrpkmZ
+    lDpiJQ0k/+laM5ZwIFZrufV4GSrwj479LwZm7Te6clUAhmXIo5yuhJL79RqakhPq
+    YWESRX8Jwtru0IBJHNFtYrJDflPECMULLQ08Y4bw6mcwRAdJ04YmFmUuwWQT6NrF
+    ffoAM2Cv+XnKoSwi7BTNKBColLxI1VStJQSLQJ7ggLVv/I8QWu8z9xvPxs3MoWN1
+    jeXav2bZA8FOOpT6C2hW6z+d170piatpBnxRS4B4NAH9gCLbj1tY80E+++Z3wHDb
+    40IU2VHcV9E0+MZ7HTZgestqSQzaS7wHOcir0zRB6jAffMDrWZ/SdMxqlg==
+    -----END CERTIFICATE-----
+- path: "/etc/ssl/certs/ca.pem"
+  permissions: '0700'
+  content: |
+    -----BEGIN CERTIFICATE-----
+    MIIC9zCCAd+gAwIBAgIJAJ5JjqH9JpPGMA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNV
+    BAMMB2t1YmUtY2EwHhcNMTYxMDEzMTkwNDAxWhcNNDQwMjI5MTkwNDAxWjASMRAw
+    DgYDVQQDDAdrdWJlLWNhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+    uek8thT/NfcAGU/tLzIecwRSdqKLr0vq4oqJGwZ7F1S0L5xqWG8qBdYBrwL2UGHh
+    Y1Wg5XgWMVzYuaIGPOC3pSZDU/eoqIlscVAMWRlFQxb/mRAIZR+unLOmVttQSTJh
+    cLgv7Nt/MJXb+lA/0unmljNvEwOLt+gGK4/JFrvanvO+GOixbzsf5gV+NVoEtFjm
+    wunu0CqtFpG23bmm2Z5kMrivV/0H4qVKI2uH7PqkXHDlXguZAnBMDS29x6oau8Do
+    fML1VtmQ1sykK/nK0tBOoqTXHklVtbimwSxglSiCMpwrxwX/mBXhBXIroXDYtOL3
+    eY5CxHeFZwhsKEua9XgrrQIDAQABo1AwTjAdBgNVHQ4EFgQUK3DHcxa2TACKd6l3
+    b67rfB/inL4wHwYDVR0jBBgwFoAUK3DHcxa2TACKd6l3b67rfB/inL4wDAYDVR0T
+    BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAPntg57p/U7OVfOOsuJm93OsrpkmZ
+    lDpiJQ0k/+laM5ZwIFZrufV4GSrwj479LwZm7Te6clUAhmXIo5yuhJL79RqakhPq
+    YWESRX8Jwtru0IBJHNFtYrJDflPECMULLQ08Y4bw6mcwRAdJ04YmFmUuwWQT6NrF
+    ffoAM2Cv+XnKoSwi7BTNKBColLxI1VStJQSLQJ7ggLVv/I8QWu8z9xvPxs3MoWN1
+    jeXav2bZA8FOOpT6C2hW6z+d170piatpBnxRS4B4NAH9gCLbj1tY80E+++Z3wHDb
+    40IU2VHcV9E0+MZ7HTZgestqSQzaS7wHOcir0zRB6jAffMDrWZ/SdMxqlg==
+    -----END CERTIFICATE-----
 - path: "/etc/kubernetes/ssl/serviceaccount.key"
   permissions: '0700'
   content: |
@@ -208,3 +285,25 @@ write_files:
     1F1M8MEzLc2K5+BdRsdUoko1kxC9Pm+QloX2M9tQrtsX+a+5p2pG1oh2x7Q86m+Y
     7HaBgEE/eevYIuy6l+kLg1elGyofBDzntnAxjOSXNg7wm7mWCFhf
     -----END RSA PRIVATE KEY-----
+- path: "/etc/kubernetes/ssl/apiserver.pem"
+  permissions: '0700'
+  content: |
+    -----BEGIN CERTIFICATE-----
+    MIIDFzCCAf+gAwIBAgIJAPtvMJrOLyo1MA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNV
+    BAMMB2t1YmUtY2EwHhcNMTYxMDEzMTkyMzQyWhcNMTkwNzEwMTkyMzQyWjAZMRcw
+    FQYDVQQDDA5rdWJlLWFwaXNlcnZlcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+    AQoCggEBANpif7/TGXhEaSSUpqOuPfvOA+fTso53QlJnMc/rn4LY/NfqKqw0uGE0
+    yOMh2HgGWvWzXsdmwvj6FA8xUiGinAqaoBSvOoVEwWdfa7YLWnZpODBRxdD7Ksx3
+    AlTXa2QKUH+CYMQXHuAV0jBjfCDFPNxWaSLmXjDO90vMWGM16cHnIo9Wi5z7z4I9
+    SrA7CJZmmPqmW5GEzfTgueTCSLXV7hSAdDpvnmFimpjtcqEQpMdiI3ezlmeWiww/
+    iANhRaVPYxcx3tqxA9h8ZOxmOPuP0BnzOtFP4wb3+lr+9i+WxDUgOTVynYM4IU8K
+    /wETxs7hR1/NfbaYztw23+QzMe7VHekCAwEAAaNpMGcwCQYDVR0TBAIwADALBgNV
+    HQ8EBAMCBeAwTQYDVR0RBEYwRIIKa3ViZXJuZXRlc4ISa3ViZXJuZXRlcy5kZWZh
+    dWx0ghZrdWJlcm5ldGVzLmRlZmF1bHQuc3ZjhwSsEgABhwQKABABMA0GCSqGSIb3
+    DQEBCwUAA4IBAQB3iE5Pchr6BE+cPe8c4kPlY68BmfGAt3D177XIT7Dkx6BjmIxg
+    7WwA6CugDI3670wdQlz9+dHRxSf+Ki5Uhj8ZrAxjwALldlju3xcwNGBa2yZpmaoA
+    4wNz9l3MA811haydOj4MzfiMEHHUnVJDGk0RrpHJkdZlKWHPea83DwIs+xiXmV16
+    helUr4qkKokUpd8EnsAyHW9AM3v0AMXj63LfUP21QRYdAASf17tTIhqXJ/wLmsJB
+    pGP9ONX7eHNE1KqaLV+8F6AhCVfPKNcRVkWUxuv87MYlz1UnSMcV7KakC4QU8DZf
+    wccm3REfWNfshegM5+fBCLSjEnubbv4TYQAj
+    -----END CERTIFICATE-----
