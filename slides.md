@@ -46,15 +46,15 @@ Today's **Setup**
 </center>
 
 !SUB
-Kubelet, leuk proces
+**Kubernetes** concepts introduction
+<br/>
+<br/>
+The Kubernetes concepts slide shows the architecture followed by Kubernetes. It displays the following key components:
 
-!SUB
-Kube-proxy
-
-!SUB
-* API server
-* Controller Manager
-* ETCD
+- API server exposes services which can be by other components. The API server is stateless. APIs can be accessed using the kubectl command line interface (CLI) or using AJAX. 
+- Individual Kubelet processes run on each physical machine which is used to manage pods (see sub slides of next slides [navigation: right, down] on its system. 
+- Furthermore a scheduler is used to schedule pods onto machines based on a scheduling algorithm.
+- Finally, the controller manager
 
 !SLIDE
 **Kubernetes** concepts: Kubelet, Service Proxy, Pods
@@ -64,6 +64,25 @@ Kube-proxy
   <img src="img/k8s-arch-kubelets-service-pods.png" style="width: 70%;" />
 </center>
 
+!SUB
+**Worker node (1):** Kubelet and Pods
+<br/>
+<br/>
+**Kubelet**
+Each worker runs services to run containers (Docker) and services to be managed from the master. In addition to Docker, Kubelet is a service installed on the worker nodes. It reads container manifests as YAML files that describes a pod. Kubelet ensures that the containers defined in the pods are started and continue running.
+<br/>
+<br/>
+**Pods**
+A Pod is used as the atomic unit for scheduling. It is typically a collections of one/more container(s). It also contains collections of data volumes. It is to be noted that data volumes are independent of containers. Name spaces are shared inside a pod. Furthermore every object inside a pod has a label.
+
+!SUB
+**Worker node (2):** Kube-proxy (aka service proxy)
+<br/>
+<br/>
+**kube-proxy**
+The Kubernetes network proxy runs on each node. This reflects services as defined in the Kubernetes API on each node and can do simple TCP,UDP stream forwarding or round robin TCP,UDP forwarding across a set of backends. 
+Services typically contain one or more pods. A service gets a known static IP address, DNS name etc. It helps us achieve tasks like configuration and reference.
+
 !SLIDE
 **Kubernetes** concepts: API server, Controller Manager, etcd
 <br/>
@@ -71,6 +90,11 @@ Kube-proxy
 <center>
   <img src="img/k8s-arch-api-cm-scheduler.png" style="width: 70%;" />
 </center>
+
+!SUB
+* API server
+* Controller Manager
+* ETCD
 
 !SLIDE
 **Weave** overlay network
