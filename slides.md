@@ -92,9 +92,20 @@ Services typically contain one or more pods. A service gets a known static IP ad
 </center>
 
 !SUB
-* API server
-* Controller Manager
-* ETCD
+**API server**
+<br/>
+The apiserver serves up the Kubernetes API. It is intended to be a CRUD-y server, with most/all business logic implemented in separate components or in plug-ins. It mainly processes REST operations, validates them, and updates the corresponding objects in etcd (and eventually other stores).
+
+!SUB
+**Controller Manager**
+<br/>
+Cluster-level functions are currently performed by the Controller Manager. For instance, Endpoints objects are created and updated by the endpoints controller, and nodes are discovered, managed, and monitored by the node controller. 
+The conntroller manager watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state. Examples of controllers that ship with Kubernetes today are the replication controller, endpoints controller, namespace controller, and serviceaccounts controller.
+
+!SUB
+**etcd**
+<br/>
+All persistent master state is stored in an instance of etcd. This provides a great way to store configuration data reliably. With watch support, coordinating components can be notified very quickly of changes.
 
 !SLIDE
 **Weave** overlay network
