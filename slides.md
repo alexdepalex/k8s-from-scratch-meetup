@@ -158,8 +158,7 @@ On your own host in the coreos subdirectory of the repository type:
 ```
 vagrant up
 ```
-
-*Verify the host is up*
+Verify the host is up
 ```
 ping 172.17.8.101
 ```
@@ -169,13 +168,26 @@ ping 172.17.8.101
 ```
 vagrant ssh core-01
 ```
+Your prompt should look similar to this
+```
+CoreOS stable (1122.2.0)
+Last login: Mon Oct 17 18:58:01 2016 from 10.0.2.2
+core@core-01 ~ $
+```
 
 !SUB
 *Verify cluster health*
 ```
 etcdctl cluster-health
 ```
-
+This should return a prompt like this
+```
+core@core-01 ~ $ etcdctl cluster-health
+member 25d6ce33763c5524 is healthy: got healthy result from http://172.17.8.102:2379
+member 6ae27f9fa2984b1d is healthy: got healthy result from http://172.17.8.101:2379
+member ff32f4b39b9c47bd is healthy: got healthy result from http://172.17.8.103:2379
+cluster is healthy
+```
 !SUB
 PAUZE
 
@@ -199,28 +211,48 @@ sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
 ```
 
 !SUB
-*Check the log output*
+*Follow the log output to see kubelet starting up*
 ```
-journalctl -u kube-kubelet
+journalctl -fu kube-kubelet
 ```
+Press CTRL-C to cancel following the log.
 
 !SUB
 *Verify that the master is visible*
 ```
 kubectl get nodes
 ```
-
+This should show the following result
+```
+core@core-01 ~ $ kubectl get nodes
+NAME      STATUS    AGE
+core-01   Ready     1m
+```
 !SUB
 *Start the Kubelet on the workers*
 ```
-ssh core@k8snode0 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet" 
-ssh core@k8snode1 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet"
+ssh core@172.17.8.102 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet" 
+ssh core@172.17.8.103 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet"
 ```
-
+When doing this you'll get a popup about the ssh key, accept this by typing yes
+```
+The authenticity of host '172.17.8.102 (172.17.8.102)' can't be established.
+ECDSA key fingerprint is SHA256:8zpew9mfIiReAYja7rIAixledT/mIIutqedt6sWusJ4.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.17.8.102' (ECDSA) to the list of known hosts.
+```
 !SUB
 *Verify that all three nodes are visible*
 ```
 kubectl get nodes
+```
+This should show the following result
+```
+core@core-01 ~ $ kubectl get nodes
+NAME      STATUS    AGE
+core-01   Ready     2m
+core-02   Ready     1m
+core-03   Ready     1m
 ```
 
 !SLIDE
@@ -241,8 +273,9 @@ sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
 !SUB
 *Check the log output*
 ```
-journalctl -u kube-proxy
+journalctl -fu kube-proxy
 ```
+Press CTRL-C to cancel following the log.
 
 !SUB
 *Start the kube-proxy on the workers*
