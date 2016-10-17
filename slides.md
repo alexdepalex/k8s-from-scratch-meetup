@@ -150,7 +150,7 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 !SLIDE
 **Follow along**<br/>
 
-Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
+Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
 
 !SUB
 *First start the box*<br/>
@@ -189,7 +189,7 @@ member ff32f4b39b9c47bd is healthy: got healthy result from http://172.17.8.103:
 cluster is healthy
 ```
 
-!SUB
+!SLIDE
 PAUZE
 
 !SLIDE
@@ -216,7 +216,7 @@ sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
 ```
 journalctl -fu kube-kubelet
 ```
-Press CTRL-C to cancel following the log.
+Press CTRL-C to cancel following the log
 
 !SUB
 *Verify that the master is visible*
@@ -278,13 +278,13 @@ sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
 ```
 journalctl -fu kube-proxy
 ```
-Press CTRL-C to cancel following the log.
+Press CTRL-C to cancel following the log
 
 !SUB
 *Start the kube-proxy on the workers*
 ```
-ssh core@k8snode0 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
-ssh core@k8snode1 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
+ssh core@172.17.8.102 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
+ssh core@172.17.8.103 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
 ```
 
 !SLIDE
@@ -292,11 +292,27 @@ ssh core@k8snode1 "sudo systemctl enable kube-proxy && sudo systemctl start kube
 ```
 kubectl create -f https://git.io/weave-kube
 ```
+This should give the following result
+```
+core@core-01 ~ $ kubectl create -f https://git.io/weave-kube
+daemonset "weave-net" created
+```
 
 !SUB
 *Verify the deployment*
 ```
 kubectl get pods --namespace="kube-system"
+```
+This should show a result like this
+```
+core@core-01 ~ $ kubectl get pods --namespace="kube-system"
+NAME                              READY     STATUS    RESTARTS   AGE
+kube-apiserver-core-01            1/1       Running   0          5m
+kube-controller-manager-core-01   1/1       Running   0          5m
+kube-scheduler-core-01            1/1       Running   0          5m
+weave-net-4bk9o                   2/2       Running   0          1m
+weave-net-nor9v                   2/2       Running   0          1m
+weave-net-v67qy                   2/2       Running   0          1m
 ```
 
 !SUB
@@ -310,7 +326,22 @@ weave status peers
 ```
 
 !SUB
-*Schedule app*
+*Weave status peers should display a list of peers*
+```
+core@core-01 ~ $ weave status peers
+0a:e1:07:a9:14:92(core-03)
+   -> 172.17.8.101:6783     32:1b:2d:1b:d1:e0(core-01)            established
+   <- 172.17.8.102:42173    0a:4e:1e:1a:69:db(core-02)            established
+0a:4e:1e:1a:69:db(core-02)
+   -> 172.17.8.101:6783     32:1b:2d:1b:d1:e0(core-01)            established
+   -> 172.17.8.103:6783     0a:e1:07:a9:14:92(core-03)            established
+32:1b:2d:1b:d1:e0(core-01)
+   <- 172.17.8.103:40977    0a:e1:07:a9:14:92(core-03)            established
+   <- 172.17.8.102:45731    0a:4e:1e:1a:69:db(core-02)            established
+```
+
+!SLIDE
+*Schedule the kubernetes demoapp*
 ```
 kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/guestbook/all-in-one/guestbook-all-in-one.yaml
 ```
