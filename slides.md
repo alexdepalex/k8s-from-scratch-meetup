@@ -375,8 +375,11 @@ my-nginx-392870844-ttq7m   1/1       Running   0          2m
 core@core-01 ~ $ kubectl get -o yaml service/my-nginx | grep nodePort
   - nodePort: 25467
 ```
-View the app <br />
-Open your browser and go to http://172.17.8.101:*NODEPORT*
+View the app by going to
+```
+http://172.17.8.101:*NODEPORT*
+```
+Substitute NodePort with the port you found using the first command
 
 !SLIDE
 *Production readiness*
