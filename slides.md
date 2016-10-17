@@ -124,9 +124,6 @@ All persistent master state is stored in an instance of etcd. This provides a gr
 
 We have prepared the specification of the IAAS layer (on AWS) for you.
 
-!NOTE
-- to be added
-
 !SLIDE
 **Kubernetes setup the easy way!**
 
@@ -143,16 +140,6 @@ However, a blackbox setup, what about troubleshooting, a more customized setup, 
 
 hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
 
-Troubleshooting (mac os):
-
-```dyld: Library not loaded: /vagrant-substrate/staging/embedded/lib/libssl.1.0.0.dylib
-  Referenced from: /opt/vagrant/embedded/bin/openssl
-  Reason: image not found
-  ```
-
-ensure openssl is installed
-workaround: sudo ln -sf /usr/local/bin/openssl /opt/vagrant/embedded/bin/openssl
-
 !SLIDE
 **Kubernetes setup the HARD way!**
 
@@ -163,7 +150,7 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 !SLIDE
 **Follow along**
 
-verhaaltje over follow along
+Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the large screens but you can execute in sync on your own laptop or do them at your own pace at a later time.
 
 !SUB
 *First start the box*
@@ -174,13 +161,13 @@ vagrant up
 
 *Verify the host is up*
 ```
-ping ip.adres.
+ping 172.17.8.101
 ```
 
 !SUB
 *Now SSH into the master*
 ```
-vagrant ssh
+vagrant ssh core-01
 ```
 
 !SUB
@@ -196,10 +183,11 @@ PAUZE
 *Start Kubelet on the Master*
 ```
 sudo /opt/bin/kubelet \
---api-servers=http://${k8s-apiserver-fqdn}:8080 \
+--api-servers=http://172.17.8.101:8080 \
 --healthz-bind-address=0.0.0.0 \
 --config=/etc/kubernetes/manifests \
 --network-plugin=cni \
+--node-ip=172.17.8.101 \
 --network-plugin-dir=/etc/cni/net.d \
 --allow-privileged=true
 ```
@@ -214,7 +202,7 @@ kubectl get nodes
 *START Kubelet on the workers*
 ```
 ssh core@k8snode0 "sudo /opt/bin/kubelet \
---api-servers=http://${k8s-apiserver-fqdn}:8080 \
+--api-servers=http://172.17.8.101:8080 \
 --healthz-bind-address=0.0.0.0 \
 --config=/etc/kubernetes/manifests \
 --network-plugin=cni \
@@ -231,7 +219,7 @@ kubectl get nodes
 !SUB
 *Schedule weave*
 ```
-kubectl create -f /path/to/weave.yml
+kubectl create -f https://git.io/weave-kube
 ```
 
 !SUB
