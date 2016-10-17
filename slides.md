@@ -356,14 +356,27 @@ ssh core@172.17.8.103 "sudo /bin/sh -c 'curl -L https://github.com/containernetw
 ```
 
 !SLIDE
-*Schedule the kubernetes demoapp*
+*Schedule the demoapp*
 ```
-kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/guestbook/all-in-one/guestbook-all-in-one.yaml
+kubectl run my-nginx --image=nginx --replicas=2 --port=80
+kubectl expose deployment my-nginx --target-port=80 --port=8080 --type=NodePort
+```
+Verify the deployment
+```
+core@core-01 ~ $ kubectl get pods
+NAME                       READY     STATUS    RESTARTS   AGE
+my-nginx-392870844-rr6ox   1/1       Running   0          2m
+my-nginx-392870844-ttq7m   1/1       Running   0          2m
 ```
 
 !SUB
-*View the app*
-Open your browser to http://172.17.8.101
+*Find the port on which the service was scheduled*
+```
+core@core-01 ~ $ kubectl get -o yaml service/my-nginx | grep nodePort
+  - nodePort: 25467
+```
+View the app <br />
+Open your browser and go to http://172.17.8.101:*NODEPORT*
 
 !SLIDE
 *Production readiness*
