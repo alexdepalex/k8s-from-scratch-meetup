@@ -156,7 +156,8 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 !SLIDE
 **Follow along**<br/>
 
-Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
+Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.<br /> <br />
+View the slides at https://xebia.github.io/k8s-from-scratch-meetup/
 
 !SUB
 *First start the box*<br/>
