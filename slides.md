@@ -188,6 +188,7 @@ member 6ae27f9fa2984b1d is healthy: got healthy result from http://172.17.8.101:
 member ff32f4b39b9c47bd is healthy: got healthy result from http://172.17.8.103:2379
 cluster is healthy
 ```
+
 !SUB
 PAUZE
 
@@ -228,6 +229,7 @@ core@core-01 ~ $ kubectl get nodes
 NAME      STATUS    AGE
 core-01   Ready     1m
 ```
+
 !SUB
 *Start the Kubelet on the workers*
 ```
@@ -241,6 +243,7 @@ ECDSA key fingerprint is SHA256:8zpew9mfIiReAYja7rIAixledT/mIIutqedt6sWusJ4.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '172.17.8.102' (ECDSA) to the list of known hosts.
 ```
+
 !SUB
 *Verify that all three nodes are visible*
 ```
@@ -284,14 +287,24 @@ ssh core@k8snode0 "sudo systemctl enable kube-proxy && sudo systemctl start kube
 ssh core@k8snode1 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
 ```
 
-!SUB
+!SLIDE
 *Schedule weave*
 ```
 kubectl create -f https://git.io/weave-kube
 ```
 
 !SUB
-*Verify weave status*
+*Verify the deployment*
+```
+kubectl get pods --namespace="kube-system"
+```
+
+!SUB
+*Install the weave binary*
+```
+sudo /usr/bin/curl -L https://github.com/weaveworks/weave/releases/download/v1.7.2/weave -o /opt/bin/weave && sudo chmod +x /opt/bin/weave
+```
+Use it to verify the weave status
 ```
 weave status peers
 ```
@@ -299,12 +312,12 @@ weave status peers
 !SUB
 *Schedule app*
 ```
-kubectl create -f /path/to/app.yml
+kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/guestbook/all-in-one/guestbook-all-in-one.yaml
 ```
 
 !SUB
 *View the app*
-Open your browser to http://bla.bla
+Open your browser to http://172.17.8.101
 
 !SLIDE
 *Production readiness*
