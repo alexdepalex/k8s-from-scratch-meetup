@@ -156,7 +156,7 @@ hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kub
 !SLIDE
 **Follow along**<br/>
 
-Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
+Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
 
 !SUB
 *First start the box*<br/>
@@ -194,7 +194,8 @@ member 6ae27f9fa2984b1d is healthy: got healthy result from http://172.17.8.101:
 member ff32f4b39b9c47bd is healthy: got healthy result from http://172.17.8.103:2379
 cluster is healthy
 ```
-!SUB
+
+!SLIDE
 PAUZE
 
 !SLIDE
@@ -221,7 +222,7 @@ sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
 ```
 journalctl -fu kube-kubelet
 ```
-Press CTRL-C to cancel following the log.
+Press CTRL-C to cancel following the log
 
 !SUB
 *Verify that the master is visible*
@@ -234,6 +235,7 @@ core@core-01 ~ $ kubectl get nodes
 NAME      STATUS    AGE
 core-01   Ready     1m
 ```
+
 !SUB
 *Start the Kubelet on the workers*
 ```
@@ -247,6 +249,7 @@ ECDSA key fingerprint is SHA256:8zpew9mfIiReAYja7rIAixledT/mIIutqedt6sWusJ4.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '172.17.8.102' (ECDSA) to the list of known hosts.
 ```
+
 !SUB
 *Verify that all three nodes are visible*
 ```
@@ -281,36 +284,86 @@ sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
 ```
 journalctl -fu kube-proxy
 ```
-Press CTRL-C to cancel following the log.
+Press CTRL-C to cancel following the log
 
 !SUB
 *Start the kube-proxy on the workers*
 ```
-ssh core@k8snode0 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
-ssh core@k8snode1 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
+ssh core@172.17.8.102 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
+ssh core@172.17.8.103 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
 ```
 
-!SUB
+!SLIDE
 *Schedule weave*
 ```
 kubectl create -f https://git.io/weave-kube
 ```
+This should give the following result
+```
+core@core-01 ~ $ kubectl create -f https://git.io/weave-kube
+daemonset "weave-net" created
+```
 
 !SUB
-*Verify weave status*
+*Verify the deployment*
+```
+kubectl get pods --namespace="kube-system"
+```
+This should show a result like this
+```
+core@core-01 ~ $ kubectl get pods --namespace="kube-system"
+NAME                              READY     STATUS    RESTARTS   AGE
+kube-apiserver-core-01            1/1       Running   0          5m
+kube-controller-manager-core-01   1/1       Running   0          5m
+kube-scheduler-core-01            1/1       Running   0          5m
+weave-net-4bk9o                   2/2       Running   0          1m
+weave-net-nor9v                   2/2       Running   0          1m
+weave-net-v67qy                   2/2       Running   0          1m
+```
+
+!SUB
+*Install the weave binary*
+```
+sudo /usr/bin/curl -L https://github.com/weaveworks/weave/releases/download/v1.7.2/weave -o /opt/bin/weave && sudo chmod +x /opt/bin/weave
+
+```
+Use it to verify the weave status
 ```
 weave status peers
 ```
 
 !SUB
-*Schedule app*
+*Weave status peers should display a list of peers*
 ```
-kubectl create -f /path/to/app.yml
+core@core-01 ~ $ weave status peers
+0a:e1:07:a9:14:92(core-03)
+   -> 172.17.8.101:6783     32:1b:2d:1b:d1:e0(core-01)            established
+   <- 172.17.8.102:42173    0a:4e:1e:1a:69:db(core-02)            established
+0a:4e:1e:1a:69:db(core-02)
+   -> 172.17.8.101:6783     32:1b:2d:1b:d1:e0(core-01)            established
+   -> 172.17.8.103:6783     0a:e1:07:a9:14:92(core-03)            established
+32:1b:2d:1b:d1:e0(core-01)
+   <- 172.17.8.103:40977    0a:e1:07:a9:14:92(core-03)            established
+   <- 172.17.8.102:45731    0a:4e:1e:1a:69:db(core-02)            established
+```
+
+!SUB
+*Now install the CNI loopback binary*
+```
+sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+ssh core@172.17.8.102 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'" 
+ssh core@172.17.8.103 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'"
+```
+
+!SLIDE
+*Schedule the kubernetes demoapp*
+```
+kubectl create -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/guestbook/all-in-one/guestbook-all-in-one.yaml
 ```
 
 !SUB
 *View the app*
-Open your browser to http://bla.bla
+Open your browser to http://172.17.8.101
 
 !SLIDE
 *Production readiness*
