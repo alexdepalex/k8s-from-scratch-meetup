@@ -148,13 +148,13 @@ Kubernetes is working, what about the actual setup
 hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
 
 !SLIDE
-**Follow along**
+**Follow along**<br/>
 
-Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the large screens but you can execute in sync on your own laptop or do them at your own pace at a later time.
+Today we'll be doing a follow along style presentation. All commands shown in these slides will be executed on the projector and the output will be shown <br /> You can execute the commands at the same time on your own laptop or try them at your own pace at a later time.
 
 !SUB
-*First start the box*
-On your own host, type:
+*First start the box*<br/>
+On your own host in the coreos subdirectory of the repository type:
 ```
 vagrant up
 ```
@@ -179,8 +179,8 @@ etcdctl cluster-health
 !SUB
 PAUZE
 
-!SUB
-*Start Kubelet on the Master*
+!SLIDE
+*First the kubelet*
 ```
 sudo /opt/bin/kubelet \
 --api-servers=http://172.17.8.101:8080 \
@@ -193,27 +193,62 @@ sudo /opt/bin/kubelet \
 ```
 
 !SUB
+*To daemonize the process we use systemd* 
+```
+sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
+```
+
+!SUB
+*Check the log output*
+```
+journalctl -u kube-kubelet
+```
+
+!SUB
 *Verify that the master is visible*
 ```
 kubectl get nodes
 ```
 
 !SUB
-*START Kubelet on the workers*
+*Start the Kubelet on the workers*
 ```
-ssh core@k8snode0 "sudo /opt/bin/kubelet \
---api-servers=http://172.17.8.101:8080 \
---healthz-bind-address=0.0.0.0 \
---config=/etc/kubernetes/manifests \
---network-plugin=cni \
---network-plugin-dir=/etc/cni/net.d \
---allow-privileged=true"
+ssh core@k8snode0 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet" 
+ssh core@k8snode1 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet"
 ```
 
 !SUB
 *Verify that all three nodes are visible*
 ```
 kubectl get nodes
+```
+
+!SLIDE
+*Next up is the proxy*
+```
+sudo /opt/bin/kube-proxy \
+--master=http://172.17.8.101:8080 \
+--logtostderr=true \
+--masquerade-all
+```
+
+!SUB
+*To daemonize the process we use systemd* 
+```
+sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
+```
+
+!SUB
+*Check the log output*
+```
+journalctl -u kube-proxy
+```
+
+!SUB
+*Start the kube-proxy on the workers*
+```
+ssh core@k8snode0 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
+ssh core@k8snode1 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
 ```
 
 !SUB
