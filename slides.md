@@ -319,6 +319,7 @@ weave-net-v67qy                   2/2       Running   0          1m
 *Install the weave binary*
 ```
 sudo /usr/bin/curl -L https://github.com/weaveworks/weave/releases/download/v1.7.2/weave -o /opt/bin/weave && sudo chmod +x /opt/bin/weave
+
 ```
 Use it to verify the weave status
 ```
@@ -338,6 +339,14 @@ core@core-01 ~ $ weave status peers
 32:1b:2d:1b:d1:e0(core-01)
    <- 172.17.8.103:40977    0a:e1:07:a9:14:92(core-03)            established
    <- 172.17.8.102:45731    0a:4e:1e:1a:69:db(core-02)            established
+```
+
+!SUB
+*Now install the CNI loopback binary*
+```
+sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+ssh core@172.17.8.102 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'" 
+ssh core@172.17.8.103 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'"
 ```
 
 !SLIDE
