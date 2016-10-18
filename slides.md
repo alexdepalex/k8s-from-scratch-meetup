@@ -30,7 +30,7 @@ About **us**
 <br/>
 **Fai Fung**: Copy-Paste Wizard at **Xebia**.
 
-**Eric Nieuwenhuijsen**: Cloud Engineer at **Xebia**.
+**Eric Nieuwenhuijsen**: Chaos Monkey at **Xebia**.
 
 **Thomas Kruitbosch**: DevOps Wise guy at **Xebia**.
 
