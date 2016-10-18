@@ -68,6 +68,7 @@ Vagrant.configure("2") do |config|
     # in CoreOS, so tell Vagrant that so it can be smarter.
     v.check_guest_additions = false
     v.functional_vboxsf     = false
+    v.linked_clone          = true
   end
 
   # plugin conflict
