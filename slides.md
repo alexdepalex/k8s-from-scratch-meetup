@@ -191,6 +191,20 @@ cluster is healthy
 !SLIDE
 PAUZE
 
+!SUB
+<!-- .slide: data-background-color="var(--black)" data-background="url(img/containerday.jpg)" -->
+<center>
+<h2>Dutch Container Day</h2>
+<p><font color="white">November 17th - Wibautstraat 200 Amsterdam</font></p>
+<br/ >
+<br />
+<br/ >
+<p><font color="white">Special discount for Dutch Devops Engineers!</font></p>
+<p><b><font color="white">33% discount code: kubernetes-from-scratch </font></b></p>
+ <p><font color="white">(only valid today!)</font></p>
+</center>
+
+
 !SLIDE
 *First the kubelet*
 ```
