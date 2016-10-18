@@ -1,6 +1,6 @@
 <div style="width: 100%; margin-top: -300px;">
 <center>
-  <img src="img/k8s-logo.png" style="width: 40%;" />
+  <img src="img/k8s.png" style="width: 40%;" />
 </center>
 </div>
 <br />
