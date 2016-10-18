@@ -27,12 +27,12 @@ About **us**
 !SUB
 **Schedule**
 
-- 18:30 Reception 
-- 19:00 Food served
-- 19:30 Kubernetes from scratch part 1: introduction
-- 20:00 Break
-- 20:15 Kubernetes from scratch part 2: type-along
-- 21:00 Drinks
+- 18:00 Reception
+- 18:30 Food served
+- 19:00 Kubernetes from scratch part 1: introduction
+- 19:30 Break
+- 19:45 Kubernetes from scratch part 2: type-along
+- 20:30 Drinks
 
 
 !SLIDE
@@ -57,8 +57,8 @@ Today's **Setup**
 <br/>
 The Kubernetes concepts slide shows the architecture followed by Kubernetes. It displays the following key components:
 
-- API server exposes services which can be by other components. The API server is stateless. APIs can be accessed using the kubectl command line interface (CLI) or using AJAX. 
-- Individual Kubelet processes run on each physical machine which is used to manage pods (see sub slides of next slides [navigation: right, down] on its system. 
+- API server exposes services which can be by other components. The API server is stateless. APIs can be accessed using the kubectl command line interface (CLI) or using AJAX.
+- Individual Kubelet processes run on each physical machine which is used to manage pods (see sub slides of next slides [navigation: right, down] on its system.
 - All persistent master state is stored in an instance of etcd. etcd is a distributed key-value store
 - Furthermore, a scheduler is used to schedule pods onto machines based on a scheduling algorithm.
 - Finally, the controller manager performs cluster level controller functions.
@@ -87,7 +87,7 @@ A pod is a group of one or more containers (such as Docker containers), the shar
 <br/>
 <br/>
 **kube-proxy**
-The Kubernetes network proxy runs on each node. This reflects services as defined in the Kubernetes API on each node and can do simple TCP,UDP stream forwarding or round robin TCP,UDP forwarding across a set of backends. 
+The Kubernetes network proxy runs on each node. This reflects services as defined in the Kubernetes API on each node and can do simple TCP,UDP stream forwarding or round robin TCP,UDP forwarding across a set of backends.
 Services typically contain one or more pods. A service gets a known static IP address, DNS name etc. It helps us achieve tasks like configuration and reference.
 
 !SLIDE
@@ -105,12 +105,12 @@ The apiserver serves up the Kubernetes API. It is intended to be a CRUD-y server
 <br/>
 <br/>
 **Scheduler**
-A scheduler is used to schedule pods onto machines based on a scheduling algorithm. The scheduler is responsible for tracking resource utilization on each host to make sure that workloads are not scheduled in excess of the available resources. 
+A scheduler is used to schedule pods onto machines based on a scheduling algorithm. The scheduler is responsible for tracking resource utilization on each host to make sure that workloads are not scheduled in excess of the available resources.
 
 !SUB
 **Controller Manager**
 <br/>
-Cluster-level functions are performed by the Controller Manager. For instance, Endpoints objects are created and updated by the endpoints controller, and nodes are discovered, managed, and monitored by the node controller. 
+Cluster-level functions are performed by the Controller Manager. For instance, Endpoints objects are created and updated by the endpoints controller, and nodes are discovered, managed, and monitored by the node controller.
 
 The controller manager watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state. Examples of controllers that ship with Kubernetes today are the replication controller, endpoints controller, namespace controller, and serviceaccounts controller.
 
@@ -205,7 +205,7 @@ sudo /opt/bin/kubelet \
 ```
 
 !SUB
-*To daemonize the process we use systemd* 
+*To daemonize the process we use systemd*
 ```
 sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
 ```
@@ -232,15 +232,11 @@ core-01   Ready     1m
 !SUB
 *Start the Kubelet on the workers*
 ```
-ssh core@172.17.8.102 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet" 
-ssh core@172.17.8.103 "sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet"
-```
-When doing this you'll get a popup about the ssh key, accept this by typing yes
-```
-The authenticity of host '172.17.8.102 (172.17.8.102)' can't be established.
-ECDSA key fingerprint is SHA256:8zpew9mfIiReAYja7rIAixledT/mIIutqedt6sWusJ4.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '172.17.8.102' (ECDSA) to the list of known hosts.
+vagrant ssh core-02
+core@core-02 ~ $ sudo systemctl start kube-kubelet
+
+vagrant ssh core-03
+core@core-03 ~ $ sudo systemctl start kube-kubelet
 ```
 
 !SUB
@@ -267,7 +263,7 @@ sudo /opt/bin/kube-proxy \
 ```
 
 !SUB
-*To daemonize the process we use systemd* 
+*To daemonize the process we use systemd*
 ```
 sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
 ```
@@ -282,8 +278,11 @@ Press CTRL-C to cancel following the log
 !SUB
 *Start the kube-proxy on the workers*
 ```
-ssh core@172.17.8.102 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy" 
-ssh core@172.17.8.103 "sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy"
+vagrant ssh core-02
+core@core-02 ~ $ sudo systemctl start kube-proxy
+
+vagrant ssh core-03
+core@core-03 ~ $ sudo systemctl start kube-proxy
 ```
 
 !SLIDE
@@ -315,12 +314,7 @@ weave-net-v67qy                   2/2       Running   0          1m
 ```
 
 !SUB
-*Install the weave binary*
-```
-sudo /usr/bin/curl -L https://github.com/weaveworks/weave/releases/download/v1.7.2/weave -o /opt/bin/weave && sudo chmod +x /opt/bin/weave
-
-```
-Use it to verify the weave status
+*Verify the weave status*
 ```
 weave status peers
 ```
@@ -343,9 +337,14 @@ core@core-01 ~ $ weave status peers
 !SUB
 *Now install the CNI loopback binary*
 ```
-sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
-ssh core@172.17.8.102 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'" 
-ssh core@172.17.8.103 "sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'"
+vagrant ssh core-01
+core@core-01 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+
+vagrant ssh core-02
+core@core-02 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+
+vagrant ssh core-03
+core@core-03 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
 ```
 
 !SLIDE
