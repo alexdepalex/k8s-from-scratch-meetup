@@ -1,10 +1,8 @@
-<!-- .slide: data-background-color="var(--mainColor)" data-background="url(/img/gamification.jpg)" data-background-size="cover" data-background-position="center" -->
-# Kubernetes from scratch<br/>
-# <span style='font-size:0.9em'>How to run kube on almost any IaaS</span>
+<!-- .slide: data-background-color="var(--white)" data-background="url(/img/title-bg.png)" data-background-size="contain" data-background-position="center" -->
 <br />
 <br />
 <div style="width: 200px; margin-bottom: -500px; margin-left: -200px;">
-  <img src="img/xebia.svg" />
+  <img src="img/xebia-purple.png" />
 </div>
 
 !SLIDE
@@ -20,11 +18,21 @@ About **you**
 About **us**
 <br/>
 <br/>
-Fai Fung Copy-Paste Wizard at **Xebia**.
+**Fai Fung**: Copy-Paste Wizard at **Xebia**.
 
-Eric Nieuwenhuijsen Cloud Engineer at **Xebia**.
+**Eric Nieuwenhuijsen**: Cloud Engineer at **Xebia**.
 
-Thomas Kruitbosch DevOps Wise guy at **Xebia**.
+**Thomas Kruitbosch**: DevOps Wise guy at **Xebia**.
+
+!SUB
+**Schedule**
+
+- 18:30 Reception 
+- 19:00 Food served
+- 19:30 Kubernetes from scratch part 1: introduction
+- 20:00 Break
+- 20:15 Kubernetes from scratch part 2: type-along
+- 21:00 Drinks
 
 !NOTE
 - to be added, intro
