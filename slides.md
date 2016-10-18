@@ -1,4 +1,4 @@
-<!-- .slide: data-background-color="var(--white)" data-background="url(/img/title-bg.png)" data-background-size="contain" data-background-position="center" -->
+<!-- .slide: data-background-color="var(--white)" data-background="url(img/title-bg.png)" data-background-size="contain" data-background-position="center" -->
 <br />
 <br />
 <div style="width: 200px; margin-bottom: -500px; margin-left: -200px;">
@@ -34,8 +34,6 @@ About **us**
 - 20:15 Kubernetes from scratch part 2: type-along
 - 21:00 Drinks
 
-!NOTE
-- to be added, intro
 
 !SLIDE
 Today's **Setup**
@@ -114,7 +112,7 @@ A scheduler is used to schedule pods onto machines based on a scheduling algorit
 <br/>
 Cluster-level functions are performed by the Controller Manager. For instance, Endpoints objects are created and updated by the endpoints controller, and nodes are discovered, managed, and monitored by the node controller. 
 
-The conntroller manager watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state. Examples of controllers that ship with Kubernetes today are the replication controller, endpoints controller, namespace controller, and serviceaccounts controller.
+The controller manager watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state. Examples of controllers that ship with Kubernetes today are the replication controller, endpoints controller, namespace controller, and serviceaccounts controller.
 
 !SUB
 **etcd**
@@ -134,32 +132,18 @@ All persistent master state is stored in an instance of etcd. This provides a gr
 </center>
 
 !SLIDE
-**Whats'up?** Kubernetes, Kubernetes, Kubernetes.
+**Where do we start Today?**
 
-We have prepared the specification of the IAAS layer (on AWS) for you.
+- We have prepared the specification of the IAAS layer (on AWS) for you.
+- When prepared, you have a IaaS layer running (a healthy three nodes cluster)
 
-!SLIDE
-**Kubernetes setup the easy way!**
+<br/>
+<br/>
+**If you want more groundwork:**
 
-Ensure have virtualBox, vagrant working including 'vagrant ssh' access. For windows users, follow this blog if 'vagrant ssh' is not working [blog](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html)  
+- [*Kubernetes Installation with Vagrant & CoreOS*](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
+- [*Kubernetes The Hard Way, tutorial by Kelsey Hightower*](https://github.com/kelseyhightower/kubernetes-the-hard-way)
 
-A simple tutorial to setup Kubernetes on a Vagrant cluster
-
-hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
-
-!SLIDE
-**A successful installation and setup of Kubernetes?**
-
-However, a blackbox setup, what about troubleshooting, a more customized setup, etc
-
-hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
-
-!SLIDE
-**Kubernetes setup the HARD way!**
-
-Kubernetes is working, what about the actual setup
-
-hands-on: [Kubernetes Installation with Vagrant & CoreOS](https://coreos.com/kubernetes/docs/latest/kubernetes-on-vagrant.html)
 
 !SLIDE
 **Follow along**<br/>
