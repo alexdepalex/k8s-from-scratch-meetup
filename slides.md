@@ -1,7 +1,17 @@
-<!-- .slide: data-background-color="var(--white)" data-background="url(img/title-bg.png)" data-background-size="contain" data-background-position="center" -->
+<div style="width: 100%; margin-top: -300px;">
+<center>
+  <img src="img/k8s-logo.png" style="width: 40%;" />
+</center>
+</div>
 <br />
 <br />
-<div style="width: 200px; margin-bottom: -500px; margin-left: -200px;">
+<center>
+**Kubernetes from scratch**
+<br />
+*How to run kube on almost any IaaS*
+<br />
+</center>
+<div style="width: 200px; margin-bottom: -500px; margin-left: -180px;">
   <img src="img/xebia-purple.png" />
 </div>
 
