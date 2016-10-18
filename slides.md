@@ -134,7 +134,7 @@ All persistent master state is stored in an instance of etcd. This provides a gr
 !SLIDE
 **Where do we start Today?**
 
-- We have prepared the specification of the IAAS layer (on AWS) for you.
+- We have prepared the specification of the IAAS layer for you.
 - When prepared, you have a IaaS layer running (a healthy three nodes cluster)
 
 <br/>
@@ -207,7 +207,7 @@ sudo /opt/bin/kubelet \
 !SUB
 *To daemonize the process we use systemd*
 ```
-sudo systemctl enable kube-kubelet && sudo systemctl start kube-kubelet
+sudo systemctl start kube-kubelet
 ```
 
 !SUB
@@ -265,7 +265,7 @@ sudo /opt/bin/kube-proxy \
 !SUB
 *To daemonize the process we use systemd*
 ```
-sudo systemctl enable kube-proxy && sudo systemctl start kube-proxy
+sudo systemctl start kube-proxy
 ```
 
 !SUB
@@ -338,13 +338,22 @@ core@core-01 ~ $ weave status peers
 *Now install the CNI loopback binary*
 ```
 vagrant ssh core-01
-core@core-01 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+core@core-01 ~ $ sudo /bin/sh -c \
+	'curl -L \
+	https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | \
+	tar xvzC /opt/cni/bin ./loopback'
 
 vagrant ssh core-02
-core@core-02 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+core@core-02 ~ $ sudo /bin/sh -c \
+	'curl -L \
+	https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | \
+	tar xvzC /opt/cni/bin ./loopback'
 
 vagrant ssh core-03
-core@core-03 ~ $ sudo /bin/sh -c 'curl -L https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar xvzC /opt/cni/bin ./loopback'
+core@core-03 ~ $ sudo /bin/sh -c \
+	'curl -L \
+	https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | \
+	tar xvzC /opt/cni/bin ./loopback'
 ```
 
 !SLIDE
